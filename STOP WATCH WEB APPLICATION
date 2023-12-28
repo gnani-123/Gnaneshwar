@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Stopwatch</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="stopwatch">
+    <div id="time">00:00:00</div>
+    <button id="start">Start</button>
+    <button id="pause">Pause</button>
+    <button id="reset">Reset</button>
+    <div id="lap-times"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+CSS CODE
+
+/* styles.css */
+#stopwatch {
+  /* Styles for the stopwatch container */
+}
+#time {
+  /* Styles for the time display */
+}
+button {
+  /* Styles for the buttons */
+}
+#lap-times {
+  /* Styles for the lap times section */
+}
+
+
+JAVASCRIPT CODE
+
+// script.js
+const timeDisplay = document.getElementById("time");
+const startButton = document.getElementById("start");
+const pauseButton = document.getElementById("pause");
+const resetButton = document.getElementById("reset");
+const lapTimesContainer = document.getElementById("lap-times");
+
+let startTime;
+let elapsedTime = 0;
+let timerInterval;
+let lapTimes = [];
+
+// Start function
+function start() {
+  startTime = Date.now() - elapsedTime;
+  timerInterval = setInterval(updateTime, 10);
+}
+
+// Pause function
+function pause() {
+  clearInterval(timerInterval);
+}
+
+// Reset function
+function reset() {
+  clearInterval(timerInterval);
+  elapsedTime = 0;
+  timeDisplay.textContent = "00:00:00";
+  lapTimes = [];
+  lapTimesContainer.textContent = "";
+}
+
+// Update time function
+function updateTime() {
+  elapsedTime = Date.now() - startTime;
+  const formattedTime = formatTime(elapsedTime);
+  timeDisplay.textContent = formattedTime;
+}
+
+// Format time function
+function formatTime(timeInMilliseconds) {
+  const minutes = Math.floor(timeInMilliseconds / 60000);
+  const seconds = Math.floor((timeInMilliseconds % 60000) / 1000);
+  const milliseconds = Math.floor(timeInMilliseconds % 1000);
+
+  return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().padStart(3, "0")}`;
+}
+
+// Lap time function
+function recordLapTime() {
+  const lapTime = formatTime(elapsedTime);
+  lapTimes.push(lapTime);
+  lapTimesContainer.textContent += `${lapTimes.length}. ${lapTime}\n`;
+}
+
+// Add event listeners to buttons
+startButton.addEventListener("click", start);
+pauseButton.addEventListener("click", pause);
+resetButton.addEventListener("click", reset);
+// Add event listener for lap time (e.g., on a separate button or key press)
+// ...
