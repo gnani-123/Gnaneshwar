@@ -1,0 +1,63 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.preprocessing import LabelEncoder
+from sklearn.tree import export_text
+
+# Load the Bank Marketing dataset
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/00222/bank-additional.zip"
+df = pd.read_csv(url, compression='zip', sep=';')
+
+# Display the first few rows of the dataset
+print(df.head())
+Step 2: Data Preprocessing
+python
+Copy code
+# Encode categorical features
+label_encoder = LabelEncoder()
+df['job'] = label_encoder.fit_transform(df['job'])
+df['marital'] = label_encoder.fit_transform(df['marital'])
+df['education'] = label_encoder.fit_transform(df['education'])
+df['default'] = label_encoder.fit_transform(df['default'])
+df['housing'] = label_encoder.fit_transform(df['housing'])
+df['loan'] = label_encoder.fit_transform(df['loan'])
+df['contact'] = label_encoder.fit_transform(df['contact'])
+df['month'] = label_encoder.fit_transform(df['month'])
+df['day_of_week'] = label_encoder.fit_transform(df['day_of_week'])
+df['poutcome'] = label_encoder.fit_transform(df['poutcome'])
+df['y'] = label_encoder.fit_transform(df['y'])  # Target variable
+
+# Select features and target variable
+X = df.drop('y', axis=1)
+y = df['y']
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+Step 3: Build and Train the Decision Tree Model
+python
+Copy code
+# Create and train the decision tree model
+dt_model = DecisionTreeClassifier(random_state=42)
+dt_model.fit(X_train, y_train)
+Step 4: Evaluate the Model
+python
+Copy code
+# Make predictions on the test set
+y_pred = dt_model.predict(X_test)
+
+# Evaluate the accuracy of the model
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy: {accuracy * 100:.2f}%")
+
+# Display classification report and confusion matrix
+print("Classification Report:")
+print(classification_report(y_test, y_pred))
+
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+# Display the decision tree rules
+tree_rules = export_text(dt_model, feature_names=list(X.columns))
+print("Decision Tree Rules:")
+print(tree_rules)
