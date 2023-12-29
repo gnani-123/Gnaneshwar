@@ -1,0 +1,44 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the Titanic dataset
+titanic_data = pd.read_csv('titanic.csv')
+
+# Display the first few rows of the dataset
+print(titanic_data.head())
+Step 2: Data Cleaning
+# Check for missing values
+print(titanic_data.isnull().sum())
+
+# Handle missing values (for simplicity, we'll drop columns with missing values in this example)
+titanic_data = titanic_data.drop(['Cabin'], axis=1)
+titanic_data = titanic_data.dropna()
+
+# Confirm that missing values have been handled
+print(titanic_data.isnull().sum())
+Step 3: Exploratory Data Analysis (EDA)
+Distribution of Survived Passengers
+sns.countplot(x='Survived', data=titanic_data)
+plt.title('Distribution of Survived Passengers')
+plt.show()
+Distribution of Passenger Classes
+sns.countplot(x='Pclass', data=titanic_data, hue='Survived')
+plt.title('Distribution of Passenger Classes')
+plt.show()
+Age Distribution
+sns.histplot(titanic_data['Age'], bins=20, kde=True)
+plt.title('Age Distribution')
+plt.show()
+sns.boxplot(x='Survived', y='Age', data=titanic_data)
+plt.title('Relationship between Age and Survival')
+plt.show()
+Fare Distribution
+sns.histplot(titanic_data['Fare'], bins=30, kde=True)
+plt.title('Fare Distribution')
+plt.show()
+Relationship between Fare and Survival
+sns.boxplot(x='Survived', y='Fare', data=titanic_data)
+plt.title('Relationship between Fare and Survival')
+plt.show()
