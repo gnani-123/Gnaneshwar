@@ -1,0 +1,33 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Sample data (replace with your actual data)
+categories = ['Male', 'Female', 'Non-Binary', 'Other']
+counts = [300, 400, 50, 20]
+
+# Create a bar chart
+plt.bar(categories, counts, color='skyblue')
+
+# Add title and labels
+plt.title('Distribution of Genders in a Population')
+plt.xlabel('Gender')
+plt.ylabel('Count')
+
+# Display the plot
+plt.show()
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Sample data (replace with your actual data)
+ages = np.random.normal(loc=30, scale=10, size=1000)  # Example: Normal distribution of ages
+
+# Create a histogram
+plt.hist(ages, bins=20, color='skyblue', edgecolor='black')
+
+# Add title and labels
+plt.title('Distribution of Ages in a Population')
+plt.xlabel('Age')
+plt.ylabel('Count')
+
+# Display the plot
+plt.show()
