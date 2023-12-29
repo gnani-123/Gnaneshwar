@@ -1,0 +1,26 @@
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+
+# Load the dataset
+data = pd.read_csv("house_prices.csv")
+
+# Define features and target
+features = ["square_footage", "bedrooms", "bathrooms"]
+target = "price"
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(data[features], data[target], test_size=0.2)
+
+# Train the model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Evaluate the model
+MSE = ((y_test - model.predict(X_test))**2).mean()
+print(f"Mean Squared Error: {MSE}")
+
+# Predict the price of a new house
+new_house = {"square_footage": 2000, "bedrooms": 3, "bathrooms": 2}
+predicted_price = model.predict([new_house])[0]
+print(f"Predicted price for new house: ${predicted_price:.2f}")
