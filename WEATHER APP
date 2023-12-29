@@ -1,0 +1,114 @@
+HTML
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Weather App</title>
+</head>
+<body>
+    <div class="container">
+        <div class="weather-container">
+            <h2>Weather Information</h2>
+            <div>
+                <label for="location">Enter Location:</label>
+                <input type="text" id="location" placeholder="Enter city name">
+                <button onclick="getWeather()">Get Weather</button>
+            </div>
+            <div id="weather-info"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+CSS
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #4A90E2, #4682B4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+}
+
+.weather-container {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4A90E2;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+#weather-info {
+    margin-top: 20px;
+}
+
+
+JAVASCRIPT
+
+
+function getWeather() {
+    const locationInput = document.getElementById('location');
+    const location = locationInput.value.trim();
+
+    if (location === '') {
+        alert('Please enter a location.');
+        return;
+    }
+
+    const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`;
+
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            displayWeather(data);
+        })
+        .catch(error => {
+            console.error('Error fetching weather data:', error);
+            alert('Unable to fetch weather data. Please check the location and try again.');
+        });
+}
+
+function displayWeather(data) {
+    const weatherInfoContainer = document.getElementById('weather-info');
+
+    if (data.cod !== '404') {
+        const cityName = data.name;
+        const temperature = data.main.temp;
+        const description = data.weather[0].description;
+
+        const weatherHtml = `
+            <p>City: ${cityName}</p>
+            <p>Temperature: ${temperature} &deg;C</p>
+            <p>Description: ${description}</p>
+        `;
+
+        weatherInfoContainer.innerHTML = weatherHtml;
+    } else {
+        alert('City not found. Please check the location and try again.');
+        weatherInfoContainer.innerHTML = '';
+    }
+}
