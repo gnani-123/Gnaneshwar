@@ -1,0 +1,68 @@
+import tkinter as tk
+from datetime import datetime
+from datetime import timedelta
+
+class StopwatchApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Stopwatch App")
+
+        # Create variables to track time
+        self.start_time = None
+        self.running = False
+
+        # Create and set up the GUI components
+        self.time_label = tk.Label(root, text="00:00:00", font=("Helvetica", 24))
+        self.time_label.pack(pady=20)
+
+        start_button = tk.Button(root, text="Start", command=self.start_stopwatch)
+        start_button.pack(side=tk.LEFT, padx=10)
+
+        pause_button = tk.Button(root, text="Pause", command=self.pause_stopwatch)
+        pause_button.pack(side=tk.LEFT, padx=10)
+
+        reset_button = tk.Button(root, text="Reset", command=self.reset_stopwatch)
+        reset_button.pack(side=tk.LEFT, padx=10)
+
+        quit_button = tk.Button(root, text="Quit", command=root.quit)
+        quit_button.pack(side=tk.LEFT, padx=10)
+
+        # Update the stopwatch display every 50 milliseconds
+        self.update_display()
+
+    def start_stopwatch(self):
+        if not self.running:
+            self.start_time = datetime.now() - timedelta(seconds=self.elapsed_time())
+            self.running = True
+
+    def pause_stopwatch(self):
+        if self.running:
+            self.running = False
+
+    def reset_stopwatch(self):
+        self.start_time = None
+        self.running = False
+        self.update_display()
+
+    def elapsed_time(self):
+        if self.start_time:
+            return (datetime.now() - self.start_time).total_seconds()
+        else:
+            return 0
+
+    def update_display(self):
+        if self.running:
+            current_time = timedelta(seconds=self.elapsed_time())
+        else:
+            current_time = timedelta(seconds=0)
+
+        time_str = str(current_time).split(".")[0]  # Format as HH:MM:SS
+        self.time_label.config(text=time_str)
+
+        # Schedule the update after 50 milliseconds
+        self.root.after(50, self.update_display)
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = StopwatchApp(root)
+    root.mainloop()
